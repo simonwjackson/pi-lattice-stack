@@ -23,6 +23,9 @@
     "extensions": [
       "./extensions",
       "./node_modules/pi-bedrock-principals/extensions"
+    ],
+    "skills": [
+      "./skills"
     ]
   }
 }
