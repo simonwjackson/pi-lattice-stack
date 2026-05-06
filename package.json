@@ -1,0 +1,28 @@
+{
+  "name": "pi-lattice-stack",
+  "version": "0.1.0",
+  "description": "Stack-specific conventions for TypeScript + React + Effect + Tailwind + Vite + Biome + Bun. Bundles pi-bedrock-principals.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/simonwjackson/pi-lattice-stack.git"
+  },
+  "keywords": [
+    "pi-package"
+  ],
+  "peerDependencies": {
+    "@mariozechner/pi-coding-agent": "*"
+  },
+  "dependencies": {
+    "pi-bedrock-principals": "file:../pi-bedrock-principals"
+  },
+  "bundledDependencies": [
+    "pi-bedrock-principals"
+  ],
+  "pi": {
+    "extensions": [
+      "./extensions",
+      "./node_modules/pi-bedrock-principals/extensions"
+    ]
+  }
+}
