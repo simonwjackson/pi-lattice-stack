@@ -14,7 +14,7 @@
     "@mariozechner/pi-coding-agent": "*"
   },
   "dependencies": {
-    "pi-bedrock-principals": "file:../pi-bedrock-principals"
+    "pi-bedrock-principals": "github:simonwjackson/pi-bedrock-principals#v0.1.0"
   },
   "bundledDependencies": [
     "pi-bedrock-principals"
