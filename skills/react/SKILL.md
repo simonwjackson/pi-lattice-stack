@@ -276,10 +276,12 @@ function handleChangeRole(id: number, newRoleId: number) {
 | Atom | Single UI primitive that consumes context | `UserFormNameField`, `StatusBadge` |
 | Molecule | Small composition of atoms | `ParticipantRow`, `ToolbarControls` |
 | Organism | Larger feature surface | `ParticipantsTable`, `EditUserForm` |
+| Template | Layout skeleton or screen pattern without route/data truth | `TwoColumnShell`, `PlanManagementLayout` |
+| Page | Fixture-backed whole-screen composition, not a route file | `OrgMetricsPage`, `ParticipantManagePage` |
 | Root | Creates state and renders Provider | `UserFormRoot`, `AppShellRoot` |
 | Composition root | Picks the Root and assembles the tree | route component, page component, story |
 
-Atoms and molecules are source-agnostic. The Root is the seam where data strategy changes.
+Atoms and molecules are source-agnostic. The Root is the seam where data strategy changes. Templates express reusable layout structure without fetching, routing, or auth truth. Pages are fixture-backed whole-screen views; they may look like routed pages, but they do not import route files, router hooks, auth hooks, ServerProviders, RPC hooks, or live mutation atoms.
 
 ## No Leaky Abstractions
 
@@ -307,6 +309,8 @@ Transport concerns never enter the component contract:
 | Same boolean checked in multiple places | Extract a separate composition |
 | Footer, toolbar, or actions differ by use case | Pass JSX children, not config booleans |
 | Data source differs between use cases | Different Root, same children |
+| Storybook needs a whole-screen page | Create a fixture-backed Page view, not a route import |
+| Storybook needs a layout pattern | Create a Template with slots/fixtures, not data wiring |
 | Something outside the frame needs feature state | Lift the Root |
 | Component needs pending state | Prefer optimistic data over transport flags |
 | UI state like selection, sort, filter, undo | Keep widget-local |

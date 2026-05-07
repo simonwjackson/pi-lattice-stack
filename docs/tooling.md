@@ -90,13 +90,17 @@ fallow audit --base main --format json --quiet
 
 ## Visual harness
 
-Components and pages render in **Storybook** with only fixture data and configured behavior. Stories follow the same Atomic Design levels as the UI code: atoms and molecules for visual permutations; organisms and Roots for meaningful feature states.
+Components and pages render in **Storybook** with only fixture data and configured behavior. Stories follow the same Atomic Design levels as the UI code: atoms and molecules for visual permutations; organisms and Roots for meaningful feature states; templates for layout skeletons; pages for whole-screen visual review.
 
 - No network calls in stories.
 - No `vi.mock`, no MSW, no `globalThis.fetch` swap.
 - A component that requires a backend to appear in Storybook has a layering bug — fix the component, not the harness.
 - The harness seam is the same Provider / Layer / atom-source override used in tests (a `layerAtom` swap).
 - Story files act as composition roots: they choose fixture data, configured behavior, and the state case being demonstrated.
+- Storybook titles are ownership-first with the atomic layer inside the owner path: `<Product or Shared>/<Feature or Surface>/<Atomic Layer>/<Component or State>`.
+- Do not create global Storybook taxonomy folders such as `Atoms/*`, `Molecules/*`, `Templates/*`, or `Pages/*` across products.
+- Page stories are fixture-backed page views, not route files. They do not import router hooks, auth hooks, ServerProviders, RPC hooks, or live mutation atoms.
+- Template stories demonstrate reusable layout structure and responsive/slot behavior without backend, routing, or auth truth.
 
 ## Real-implementation conventions
 

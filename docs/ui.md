@@ -29,6 +29,8 @@ Use Atomic Design vocabulary as a composition aid, especially for Storybook cove
 | Atom | Single UI primitive that consumes context or direct values | `StatusBadge`, `UserFormNameField` |
 | Molecule | Small composition of atoms | `ParticipantRow`, `ToolbarControls` |
 | Organism | Larger feature surface | `ParticipantsTable`, `EditUserForm` |
+| Template | Layout skeleton or screen pattern without route/data truth | `TwoColumnShell`, `PlanManagementLayout` |
+| Page | Fixture-backed whole-screen composition, not a route file | `OrgMetricsPage`, `ParticipantManagePage` |
 | Root | Creates state and renders Provider / Layer / atom source | `UserFormRoot`, `AppShellRoot` |
 | Composition root | Chooses data strategy and assembles the tree | route, page, Storybook story |
 
@@ -36,10 +38,12 @@ Guidelines:
 
 - Atoms and molecules are source-agnostic; they do not know whether data came from RPC, fixtures, local state, or a harness layer.
 - Organisms compose behavior-bearing surfaces but still avoid transport details in their public contract.
+- Templates express reusable layout structure; they do not fetch, authorize, route, or own server-backed truth.
+- Pages are whole-screen, fixture-backed page views. They may look like routed pages, but they do not import route files, router hooks, auth hooks, or real services.
 - Roots own state and provider wiring.
 - Composition roots pick the concrete Root and fixture/live data strategy.
 - Storybook stories are composition roots: they render atomic states with fixture data and configured behavior, not live services.
-- Cover atoms/molecules for visual permutations and organisms/Roots for meaningful user states (`Loading`, `Ready`, `Empty`, `LoadError`, `Defect`).
+- Cover atoms/molecules for visual permutations, organisms/Roots for meaningful user states (`Loading`, `Ready`, `Empty`, `LoadError`, `Defect`), templates for layout behavior, and pages for whole-screen visual review.
 
 ## State modeling
 
@@ -118,3 +122,31 @@ Guidelines:
 - Components do not inspect raw `AsyncResult` / `Exit` values.
 - Success views receive already-valid case data.
 - Keep this domain-specific first; do not introduce a generic result-boundary framework until multiple features force it.
+
+## Storybook hierarchy
+
+Storybook titles stay ownership-first, then expose the atomic layer inside the owner path. Do not create global `Atoms`, `Molecules`, `Organisms`, `Templates`, or `Pages` folders across products.
+
+Use:
+
+```text
+<Product or Shared>/<Feature or Surface>/<Atomic Layer>/<Component or State>
+```
+
+Examples:
+
+```text
+Incentive/Metrics/CustomMetrics/Root/Ready
+Incentive/Metrics/CustomMetrics/Organisms/Table
+Incentive/Metrics/CustomMetrics/Molecules/SearchInput
+Incentive/Metrics/CustomMetrics/Atoms/SortableHeader
+Shared/AppShell/Templates/AuthenticatedShell
+Shared/AppShell/Molecules/Breadcrumbs
+```
+
+Rules:
+
+- File colocation remains with the owning runtime code under `shared/**` or `products/**`.
+- The Storybook sidebar may include the atomic layer segment; the filesystem should not be reorganized around taxonomy.
+- Storybook Pages are fixture-backed page views. Never import route files, router hooks, auth hooks, ServerProviders, RPC hooks, or live mutation atoms into a page story.
+- Storybook Templates are layout skeletons/patterns. They can demonstrate responsive and empty-slot behavior, but not backend, routing, or auth truth.
