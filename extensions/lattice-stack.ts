@@ -16,7 +16,7 @@ const DOCS = [
 
 const HEADER =
   "[LATTICE STACK]\n\n" +
-  "Conventions for projects that use the lattice stack: TypeScript + React + Effect + Tailwind + Vite + Biome + Bun + Fallow. " +
+  "Conventions for projects that use the lattice stack: TypeScript + React + Effect + Tailwind + Vite + Biome + Bun + Fallow + Nix flakes + direnv. " +
   "Apply when the current project actually uses these tools; otherwise treat as reference. " +
   "These conventions extend the bedrock principles with stack-specific bindings."
 

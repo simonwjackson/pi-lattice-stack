@@ -2,6 +2,18 @@
 
 Build tools, formatters, runners, harness posture, and verification commands.
 
+## Development environment
+
+Use **Nix flakes** plus **direnv** for reproducible local tooling.
+
+- Each project declares its developer toolchain in `flake.nix`.
+- Commit `flake.lock` for projects that need reproducible tool versions; update it intentionally, not as drive-by churn.
+- Commit `.envrc` when it only loads the checked-in environment, e.g. `use flake` or `source_url` / `use flake` patterns approved by the project.
+- Keep machine-local secrets and personal overrides out of `.envrc`; put them in ignored local files such as `.env`, `.env.local`, or `.envrc.local` when the project supports that seam.
+- Tooling commands assume the direnv-loaded environment, not globally installed binaries.
+- After changing `flake.nix`, `flake.lock`, or `.envrc`, run `direnv allow` / reload the shell and verify the relevant command resolves from the project environment.
+- Project automation should live behind `just` recipes or checked-in scripts, with Nix providing the tools and direnv activating them.
+
 ## Formatting
 
 Use **Biome** consistently.
