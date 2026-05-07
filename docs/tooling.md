@@ -27,24 +27,24 @@ Use **Fallow** for TypeScript / JavaScript codebase intelligence: dead code, dup
 First run, from the project root:
 
 ```bash
-npx fallow
+bun x fallow
 ```
 
 Focused commands:
 
 ```bash
-npx fallow dead-code          # unused files, exports, deps, cycles, boundaries
-npx fallow dupes              # repeated logic; add --mode semantic for renamed clones
-npx fallow health             # complexity, maintainability, and refactor targets
-npx fallow fix --dry-run      # preview automatic cleanup before applying
+bun x fallow dead-code          # unused files, exports, deps, cycles, boundaries
+bun x fallow dupes              # repeated logic; add --mode semantic for renamed clones
+bun x fallow health             # complexity, maintainability, and refactor targets
+bun x fallow fix --dry-run      # preview automatic cleanup before applying
 ```
 
 Agent and CI usage prefer structured output:
 
 ```bash
-npx fallow --format json
-npx fallow dead-code --format json
-npx fallow fix --dry-run --format json
+bun x fallow --format json
+bun x fallow dead-code --format json
+bun x fallow fix --dry-run --format json
 ```
 
 Use `fallow init` when the repo needs explicit policy. It creates a tailored config and adds `.fallow/` to `.gitignore`; keep committed baselines outside `.fallow/`, for example under `fallow-baselines/`.
