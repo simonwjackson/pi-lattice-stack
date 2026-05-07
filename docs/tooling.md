@@ -20,6 +20,57 @@ Use **Biome** consistently.
 - Explicit types at module boundaries.
 - Choose clear names over clever abstractions.
 
+## Codebase intelligence
+
+Use **Fallow** for TypeScript / JavaScript codebase intelligence: dead code, duplication, complexity hotspots, circular dependencies, and architecture boundary drift.
+
+First run, from the project root:
+
+```bash
+npx fallow
+```
+
+Focused commands:
+
+```bash
+npx fallow dead-code          # unused files, exports, deps, cycles, boundaries
+npx fallow dupes              # repeated logic; add --mode semantic for renamed clones
+npx fallow health             # complexity, maintainability, and refactor targets
+npx fallow fix --dry-run      # preview automatic cleanup before applying
+```
+
+Agent and CI usage prefer structured output:
+
+```bash
+npx fallow --format json
+npx fallow dead-code --format json
+npx fallow fix --dry-run --format json
+```
+
+Use `fallow init` when the repo needs explicit policy. It creates a tailored config and adds `.fallow/` to `.gitignore`; keep committed baselines outside `.fallow/`, for example under `fallow-baselines/`.
+
+### Architecture boundaries
+
+Encode the stack's layer rules in Fallow boundaries when the project has a stable shape.
+
+- Product layers may import shared layers.
+- Shared layers are isolated from product imports.
+- Generated code should be ignored or modeled explicitly, not treated as ordinary source.
+- Run `fallow list --boundaries` after changing boundary config to verify zones match real files.
+
+For alias-shaped projects (`@app/*`, `@shared/*`), model the same rule in zones: app/product zones may import shared zones; shared zones have an empty `allow` list or otherwise cannot import app/product zones.
+
+### PR-time audits
+
+Use `fallow audit` as the changed-file quality gate once the repo has a reasonable baseline:
+
+```bash
+fallow audit
+fallow audit --base main --format json --quiet
+```
+
+`audit` returns `pass`, `warn`, or `fail`; it defaults to `new-only`, so inherited findings in touched files are context while newly introduced issues fail the gate. For existing repos, clean or baseline full-repo output (`fallow`, `fallow dead-code`, `fallow dupes`, `fallow health`) before making `audit` required in CI.
+
 ## Test runner
 
 - Unit tests run with `bun test` (`just test-unit`).
@@ -56,6 +107,7 @@ Components and pages render in **Storybook** with only fixture data and configur
 
 - TypeScript typechecking is whole-repo only because of path aliases — run `just typecheck`, not per-file `tsc`.
 - Run `just typecheck`, `just test-unit`, `just lint`, and `just format` before considering a change complete.
+- Run `fallow audit` (or the project's Fallow wrapper, e.g. `just fallow-audit`) before merging code changes when Fallow is configured.
 - Run E2E or visual tests when the change touches user-facing behavior.
 
 ## Comments
