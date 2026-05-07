@@ -20,6 +20,27 @@ UI reads like React composition; state behaves like functional data.
 - Atoms read state from context (or atoms), not from props drilled through every parent.
 - One state owner per Root. Lift the Root when siblings need shared state; do not duplicate.
 
+## Atomic composition
+
+Use Atomic Design vocabulary as a composition aid, especially for Storybook coverage.
+
+| Level | What it is | Example |
+|---|---|---|
+| Atom | Single UI primitive that consumes context or direct values | `StatusBadge`, `UserFormNameField` |
+| Molecule | Small composition of atoms | `ParticipantRow`, `ToolbarControls` |
+| Organism | Larger feature surface | `ParticipantsTable`, `EditUserForm` |
+| Root | Creates state and renders Provider / Layer / atom source | `UserFormRoot`, `AppShellRoot` |
+| Composition root | Chooses data strategy and assembles the tree | route, page, Storybook story |
+
+Guidelines:
+
+- Atoms and molecules are source-agnostic; they do not know whether data came from RPC, fixtures, local state, or a harness layer.
+- Organisms compose behavior-bearing surfaces but still avoid transport details in their public contract.
+- Roots own state and provider wiring.
+- Composition roots pick the concrete Root and fixture/live data strategy.
+- Storybook stories are composition roots: they render atomic states with fixture data and configured behavior, not live services.
+- Cover atoms/molecules for visual permutations and organisms/Roots for meaningful user states (`Loading`, `Ready`, `Empty`, `LoadError`, `Defect`).
+
 ## State modeling
 
 - Convert async/runtime primitives into domain-specific ADTs before rendering. Examples: `LibraryListState.fromResult(result)`, `LaunchState.fromExit(id, exit)`.
